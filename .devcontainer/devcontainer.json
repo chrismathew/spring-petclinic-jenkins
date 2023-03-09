@@ -24,7 +24,7 @@
 		"vmware.vscode-boot-dev-pack",
 		"mhutchie.git-graph"
 	],
-	"forwardPorts": [8082],
+	"forwardPorts": [9001],
 	"settings": {
 		"java.import.gradle.enabled": false,
 		"java.server.launchMode": "Standard"
