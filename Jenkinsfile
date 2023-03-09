@@ -8,7 +8,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Running build automation'
-                sh './gradlew bootRun'
+                sh './gradlew bootJar'
             }
         }
         stage('Build Docker Image') {
