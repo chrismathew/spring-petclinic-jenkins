@@ -25,7 +25,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                sh 'echo $docker_hub_login_PSW | docker login -u $docker_hub_login_USR --password-stdin'
+                sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
                 sh 'docker push chrismathew2000/spring-petclinic-jenkins'
             }
         }
