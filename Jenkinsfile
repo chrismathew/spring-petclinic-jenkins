@@ -18,7 +18,7 @@ pipeline {
             steps {
                 script {
                     echo 'Making a docker image'
-                    sh 'docker build  -t chrismathew2000/spring-petclinic-jenkins .'
+                    app = docker.build(DOCKER_IMAGE_NAME)
                     
                 }
             }
