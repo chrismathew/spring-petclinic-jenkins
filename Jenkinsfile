@@ -3,6 +3,7 @@ pipeline {
     environment {
         //be sure to replace "willbla" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "chrismathew2000/spring-petclinic-jenkins"
+        dockerhub=credentials('docker_hub_login')
     }
     stages {
         stage('Build') {
@@ -16,11 +17,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                script {
-                    echo 'Making a docker image'
-                    app = docker.build(DOCKER_IMAGE_NAME)
-                    
-                }
+                sh 'docker build -t chrismathew2000/spring-petclinic-jenkins .'
             }
         }
         stage('Push Docker Image') {
@@ -28,12 +25,8 @@ pipeline {
                 branch 'main'
             }
             steps {
-                script {
-                    docker.withRegistry('http://registry.hub.docker.com', 'docker_hub_login') {
-                        app.push("${env.DOCKER_IMAGE_NAME}")
-                        app.push("latest")
-                    }
-                }
+                sh 'echo $docker_hub_login_PSW | docker login -u $docker_hub_login_USR --password-stdin'
+                sh 'docker push chrismathew2000/spring-petclinic-jenkins'
             }
         }
 /*         stage('CanaryDeploy') {
