@@ -12,7 +12,24 @@ pipeline {
                 sh './gradlew bootJar'
             }
         }
-        stage('Build Docker Image') {
+        stage('Building our image') { 
+            steps { 
+                script { 
+                    dockerImage = docker.build DOCKER_IMAGE_NAME + ":v2" 
+                }
+            } 
+        }
+        stage('Deploy our image') {
+            steps {
+                script {
+                    docker.withRegistry('', dockerhub) {
+                        dockerImage.push()
+                    }
+                }
+            }
+        }
+
+        /* stage('Build Docker Image') {
             when {
                 branch 'main'
             }
@@ -27,7 +44,7 @@ pipeline {
             steps {
                 sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
                 sh 'docker push chrismathew2000/spring-petclinic-jenkins:v1'
-            }
+            } */
         }
 /*         stage('CanaryDeploy') {
             when {
