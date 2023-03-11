@@ -17,7 +17,7 @@ pipeline {
                 branch 'main'
             }
             steps {
-                sh 'docker build -t chrismathew2000/spring-petclinic-jenkins .'
+                sh 'docker build -t chrismathew2000/spring-petclinic-jenkins:v1 .'
             }
         }
         stage('Push Docker Image') {
@@ -26,7 +26,7 @@ pipeline {
             }
             steps {
                 sh 'echo $dockerhub_PSW | docker login -u $dockerhub_USR --password-stdin'
-                sh 'docker push chrismathew2000/spring-petclinic-jenkins'
+                sh 'docker push chrismathew2000/spring-petclinic-jenkins:v1'
             }
         }
 /*         stage('CanaryDeploy') {
