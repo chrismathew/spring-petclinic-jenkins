@@ -4,8 +4,6 @@ pipeline {
         //be sure to replace "willbla" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "chrismathew2000/spring-petclinic-jenkins"
         dockerhub=credentials('docker_hub_login')
-        USERNAME="chrismathew2000"
-        PASSWORD="dckr_pat_yRBTZ6VyyY4VvMya7YOoG_HBerk"
     }
     stages {
         stage('Build') {
@@ -25,7 +23,6 @@ pipeline {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', dockerhub) {
-                        sh "docker login -u ${USERNAME} -p ${PASSWORD}"
                         dockerImage.push()
                     }
                 }
