@@ -22,8 +22,8 @@ pipeline {
         stage('Deploy our image') {
             steps {
                 script {
-                    //docker.withRegistry('https://index.docker.io/v1/', dockerhub) {
-                    withCredentials([usernamePassword( credentialsId: 'docker_hub_login', usernameVariable: 'chrismathew2000', passwordVariable: 'dckr_pat_yRBTZ6VyyY4VvMya7YOoG_HBerk')]) {  
+                    docker.withRegistry('https://index.docker.io/v1/', dockerhub) {
+                      
                         dockerImage.push()
                     }
                 }
