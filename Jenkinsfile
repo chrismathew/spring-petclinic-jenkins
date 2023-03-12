@@ -22,7 +22,7 @@ pipeline {
         stage('Deploy our image') {
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', dockerhub) {
+                    docker.withRegistry('https://index.docker.io/v1/', dockerhub) {
                         dockerImage.push()
                     }
                 }
