@@ -3,7 +3,7 @@ pipeline {
     environment {
         //be sure to replace "willbla" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "chrismathew2000/spring-petclinic-jenkins"
-        DOCKER_IMAGE_NAME_ECR="spring-petclinic-jenkins"
+        DOCKER_IMAGE_NAME_ECR="350423129686.dkr.ecr.us-east-1.amazonaws.com/pet-clinic-jenkins:latest"
         dockerhub=credentials('docker_hub_login')
     }
     stages {
@@ -26,19 +26,20 @@ pipeline {
             }
             steps {
                 sh 'docker build -t  spring-petclinic-jenkins .'
+                sh 'docker tag pet-clinic-jenkins:latest 350423129686.dkr.ecr.us-east-1.amazonaws.com/pet-clinic-jenkins:latest'
             }
         }
         stage('Deploy') {
             steps {
                 script{
-                    docker.withRegistry('http://350423129686.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:aws-credentials') {
+                    docker.withRegistry('350423129686.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:aws-credentials') {
                     app.push(DOCKER_IMAGE_NAME_ECR)
-                    app.push("latest")
+                   
                     }
                 }
             }
         }
-        /* stage('Deploy our image') {
+        /* stage('Deploy our image') {350423129686.dkr.ecr.us-east-1.amazonaws.com/spring-petclinic-jenkins
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', dockerhub) {
