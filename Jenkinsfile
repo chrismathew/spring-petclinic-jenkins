@@ -3,6 +3,7 @@ pipeline {
     environment {
         //be sure to replace "willbla" with your own Docker Hub username
         DOCKER_IMAGE_NAME = "chrismathew2000/spring-petclinic-jenkins"
+        DOCKER_IMAGE_NAME_ECR="spring-petclinic-jenkins"
         dockerhub=credentials('docker_hub_login')
     }
     stages {
@@ -12,14 +13,32 @@ pipeline {
                 sh './gradlew bootJar'
             }
         }
-        stage('Building our image') { 
+        /* stage('Building our image') { 
             steps { 
                 script { 
-                    dockerImage = docker.build DOCKER_IMAGE_NAME + ":v2" 
+                    dockerImage = docker.build DOCKER_IMAGE_NAME_ECR
                 }
             } 
+        } */
+        stage('Build Docker Image') {
+            when {
+                branch 'main'
+            }
+            steps {
+                sh 'docker build -t  spring-petclinic-jenkins .'
+            }
         }
-        stage('Deploy our image') {
+        stage('Deploy') {
+            steps {
+                script{
+                    docker.withRegistry('https://350423129686.dkr.ecr.us-east-1.amazonaws.com', 'ecr:us-east-1:aws-credentials') {
+                    app.push(DOCKER_IMAGE_NAME_ECR)
+                    app.push("latest")
+                    }
+                }
+            }
+        }
+        /* stage('Deploy our image') {
             steps {
                 script {
                     docker.withRegistry('https://index.docker.io/v1/', dockerhub) {
@@ -28,7 +47,7 @@ pipeline {
                     }
                 }
             }
-        }
+        } */
 
         /* stage('Build Docker Image') {
             when {
